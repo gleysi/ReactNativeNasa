@@ -1,6 +1,6 @@
-import React, { FC } from "react";
-import { View, Text, StyleSheet, Image, Button} from "react-native";
-import { PostImage } from "../../types";
+import React, { FC } from 'react';
+import { View, Text, StyleSheet, Image, Button} from 'react-native';
+import { PostImage } from '../../types';
 
 // Functional component type definition
 const TodaysImage: FC<PostImage> = ({date, title, url}) => {
