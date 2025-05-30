@@ -1,5 +1,32 @@
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
+# 🌌 NASA Image Viewer - React Native App
+
+This is a React Native application that fetches and displays images from NASA's Astronomy Picture of the Day (APOD) API.
+
+- 📱 Features
+  - 📸 Displays today's featured NASA image with title and date.
+  - 🔍 "View" button shows more details and description of the image inline or in a modal.
+  - 📆 Scroll view of the last 5 days' images, each with their own "View" button to access additional information.
+  - 🎨 Clean UI with styled containers, images, and text.
+- 🚀 Tech Stack
+  - React Native
+  - NASA APOD API
+  - fetch or axios for API calls
+  - ScrollView for displaying multiple days of content
+- 🧠 How It Works
+  - On launch, the app fetches today's NASA APOD entry and displays the image, title, and date.
+  - A "View" button allows users to toggle or navigate to a detailed view with full description.
+  - Below the main image, a horizontally scrollable list shows the last 5 days of APOD entries.
+  - Each item in the list also features a "View" button to access extended content for that day.
+
+# 🖼️ Sample UI Layout
+
+<img src="src/assets/nasa-ios.png" width="200"> 
+
+# 🔑 NASA API Key
+To use this app, you will need a <a href="https://api.nasa.gov">NASA API key.</a> You can use the DEMO_KEY for basic usage or register for a free API key for higher rate limits.
+
 # Getting Started
 
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
