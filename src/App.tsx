@@ -1,18 +1,19 @@
 
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
 } from 'react-native';
 
-import Home from './src/views/Home';
+import Routes from './routes/Routes';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-function App(): React.JSX.Element {
+
+function App() {
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Home />
-    </SafeAreaView>
+    <SafeAreaProvider style={styles.container}>
+      <Routes />
+    </SafeAreaProvider>
   );
 }
 

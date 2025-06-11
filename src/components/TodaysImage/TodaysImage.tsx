@@ -1,9 +1,22 @@
 import React, { FC, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, Button} from 'react-native';
+import { View, Text, StyleSheet, Image, Button } from 'react-native';
 import { PostImage } from '../../types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParams } from '../../types';
+import { useNavigation } from '@react-navigation/native';
 
-// Functional component type definition
-const TodaysImage: FC<PostImage> = ({date, title, url}) => {
+
+// Type for navigation prop
+type NavigationProp = NativeStackNavigationProp<RootStackParams, 'Home'>;
+
+const TodaysImage: FC<PostImage> = ({ title, url, date, explanation }) => {
+  const navigation = useNavigation<NavigationProp>();
+
+  const handleViewPress = () => {
+    if (title && date && url && explanation) {
+      navigation.navigate('Detail', { title, date, url, explanation });
+    }
+  };
 
   const [message, setMessage] = useState('');
 
@@ -16,11 +29,13 @@ const TodaysImage: FC<PostImage> = ({date, title, url}) => {
 
   return (
     <View style={styles.container}>
-      <Image source={{ uri: url }} style={styles.image} />
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.date}>{date}</Text>
+      <Image source={{ uri: url ?? '' }} style={styles.image} />
+      <Text style={styles.title}>{title ?? 'No title'}</Text>
+      <Text style={styles.date}>{date ?? 'No date'}</Text>
       <Text style={styles.nest}>{message}</Text>
-      <View style={styles.buttonContainer}><Button title="View" /></View>
+      <View style={styles.buttonContainer}>
+        <Button title="View" onPress={handleViewPress} />
+      </View>
     </View>
   );
 };
