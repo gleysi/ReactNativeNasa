@@ -20,6 +20,7 @@ const TodaysImage: FC<PostImage> = ({ title, url, date, explanation }) => {
 
   const [message, setMessage] = useState('');
 
+  // NestJs API call to fetch welcome message
   useEffect(() => {
     fetch('http://192.168.4.84:3000/welcome')
       .then(res => res.text())
