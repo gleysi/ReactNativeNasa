@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image } from 'react-native';
+import styles from './styles';
 
 const Header = () => {
   return (
@@ -13,29 +14,5 @@ const Header = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  leftContainer: {
-    flex: 1,
-    alignItems: 'flex-start',
-  },
-  rightContainer: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  title: {
-    fontSize: 20,
-    color: 'white',
-  },
-  image: {
-    width: 60,
-    height: 60,
-  },
-});
 
 export default Header;

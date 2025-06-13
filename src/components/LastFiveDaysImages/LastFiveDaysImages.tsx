@@ -1,7 +1,8 @@
 import React, {FC} from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { PostImage as PostImageTypes} from '../../types';
 import PostImage from '../PostImage';
+import styles from './styles';
 
 const LastFiveDaysImages: FC<{postImages ?: PostImageTypes[]}> = ({postImages}) => {
   return (
@@ -20,18 +21,4 @@ const LastFiveDaysImages: FC<{postImages ?: PostImageTypes[]}> = ({postImages}) 
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 3,
-    marginVertical: 8,
-  },
-  content: {
-    paddingHorizontal: 24,
-  },
-  title: {
-    color: 'white',
-    fontSize: 16,
-    marginBottom: 18,
-  },
-});
 export default LastFiveDaysImages;

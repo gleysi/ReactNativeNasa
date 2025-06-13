@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import Header from '../components/Header';
-import TodaysImage from '../components/TodaysImage';
-import LastFiveDaysImages from '../components/LastFiveDaysImages';
-import fetchApi from '../utils/fetch';
-import { PostImage } from '../types';
+import { View } from 'react-native';
+import Header from '../../components/Header';
+import TodaysImage from '../../components/TodaysImage';
+import LastFiveDaysImages from '../../components/LastFiveDaysImages';
+import fetchApi from '../../utils/fetch';
+import { PostImage } from '../../types';
 import { format, sub } from 'date-fns';
+import styles from './styles';
 
 const Home = () => {
   // local state constant
   const [todaysImage, setTodaysImage] = useState<PostImage>();
   const [last5DaysImages, setLast5DaysImages] = useState<PostImage[]>([]);
   // useEffect means that this function will run after the component mounts
+  // useEffect lets you run side effects in function components, such as data fetching, subscriptions, or manually changing the DOM.
   useEffect(() => {
     const loadTodaysImage = async () => {
       try {
@@ -35,8 +37,8 @@ const Home = () => {
       }
     };
 
-    loadTodaysImage().catch(() => {});
-    loadLast5DaysImages().catch(() => {});
+    loadTodaysImage().catch(() => { });
+    loadLast5DaysImages().catch(() => { });
   }, []); // Second argument is an empty array of dependencies, meaning this effect runs only once when the component mounts.
 
   return (
@@ -54,13 +56,5 @@ const Home = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-    backgroundColor: 'rgba(7,26,93,255)',
-  },
-});
 
 export default Home;

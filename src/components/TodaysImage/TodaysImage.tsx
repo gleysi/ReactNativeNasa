@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, Button } from 'react-native';
+import { View, Text, Image, Button } from 'react-native';
 import { PostImage } from '../../types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParams } from '../../types';
 import { useNavigation } from '@react-navigation/native';
-
+import styles from './styles';
 
 // Type for navigation prop
 type NavigationProp = NativeStackNavigationProp<RootStackParams, 'Home'>;
@@ -41,37 +41,4 @@ const TodaysImage: FC<PostImage> = ({ title, url, date, explanation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#2c449d',
-    marginVertical: 16,
-    marginHorizontal: 24,
-    borderRadius: 32,
-    padding: 16,
-  },
-  image: {
-    width: '100%',
-    height: 190,
-    borderWidth: 2,
-    borderColor: 'white',
-    borderRadius: 32,
-  },
-  title: {
-    color: 'white',
-    fontSize: 20,
-    marginVertical: 12,
-    fontWeight: 'bold',
-  },
-  date: {
-    color: 'white',
-    fontSize: 16,
-  },
-  nest: {
-    color: 'white',
-    fontSize: 16,
-  },
-  buttonContainer: {
-    alignItems: 'flex-end',
-  },
-});
 export default TodaysImage;
