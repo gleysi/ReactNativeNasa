@@ -12,10 +12,12 @@
     - [screens/](#screens)
     - [styles/](#styles)
     - [utility/](#utility)
+  - [What is a "Render" in React?](#what-is-a-render-in-react)
   - [When to Use a Custom Hook](#when-to-use-a-custom-hook)
-  - [When to use useCallback](#when-to-use-usecallback)
-  - [Scaffold useApi.ts](#scaffold-useapits)
   - [Hooks](#hooks-1)
+    - [When to use useCallback](#when-to-use-usecallback)
+      - [Scaffold useApi.ts using useCallback hook](#scaffold-useapits-using-usecallback-hook)
+    - [useMemo](#usememo)
     - [useState](#usestate)
     - [useEffect](#useeffect)
 
@@ -166,6 +168,34 @@ If you have global styles defined in your project you can put it over here like 
 
 All the utils/helpers files go here that storing reusable methods and logic like validations, progress bar, date pickers, and according to your app requirements.
 
+## What is a "Render" in React?
+
+A render happens when a React component runs its function body again to update the UI.
+
+🔁 A render happens when:
+- State changes (e.g., setSearch('bob'))
+- Props change (e.g., parent sends new data)
+- Context changes
+- Parent component re-renders
+
+✅ When a parent component re-renders and passes new props to a child:
+➡️ The child component will also re-render — meaning:
+
+- The child’s function body runs again
+- All hook calls (useState, useEffect, useMemo, etc.) re-run (though React keeps internal state consistent)
+- All expressions and calculations inside the child function are recalculated — unless memoized (e.g. with useMemo, useCallback, or React.memo)
+
+🧠 How to optimize this?
+- Use useMemo to cache expensive values
+- Use useCallback to memoize functions
+- Use React.memo(MyChild) to prevent re-renders unless props actually change
+
+🚨 But keep in mind:
+React re-renders are generally very fast. Don’t optimize too early — only use useMemo, useCallback, etc., when:
+
+- The component is slow or laggy
+- You are working with large lists, complex calculations, or unstable function references passed to child components
+
 ## When to Use a Custom Hook
 
 If you fetch similar data in multiple components (e.g., articles, users, etc.), or if your logic is complex (loading, error handling, retries), custom hooks are highly recommended.
@@ -223,9 +253,11 @@ const Home = () => {
 };
 ````
 
-## When to use useCallback
+## Hooks
 
-useCallback memoizes (store the result or identity of a function) a function definition — 
+### When to use useCallback
+
+The useCallback hook <b>memoizes (store the result or identity of a function) a function</b> definition — 
 it ensures that the function doesn’t get re-created on every render unless its dependencies change.
 
 Use useCallback when:
@@ -241,7 +273,7 @@ const getArticles = useCallback(async () => {
 }, []);
 ````
 
-## Scaffold useApi.ts
+#### Scaffold useApi.ts using useCallback hook
 
 Scaffold a useApi generic hook that handles loading, error, and data states to reduce duplication across custom hooks.
 
@@ -323,7 +355,26 @@ const useLastFiveDaysImages = () => {
 export default useLastFiveDaysImages;
 ````
 
-## Hooks
+
+
+### useMemo
+
+The useMemo hook in React (and React Native) is used to <b>memoize expensive calculations</b> so they don't run on every render unnecessarily.
+
+````
+const filteredUsers = useMemo(() => {
+    console.log('Filtering users...');
+    return users.filter(user =>
+      user.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [search, users]);
+````
+- 🔍 What useMemo Does Here
+  It only recomputes the filteredUsers array when the search or users array changes.
+Prevents unnecessary filtering on every keystroke if inputs haven’t changed.
+
+- 🧠 Without useMemo?
+You could just put the filtering inline, but it would run on every render. With large datasets, this could hurt performance.
 
 ### useState
 
