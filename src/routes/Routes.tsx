@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParams } from '../types';
 import Home from '../views/Home';
 import Detail from '../views/Detail';
+import Search from '../views/Search';
 
 const Stack = createNativeStackNavigator<RootStackParams>();
 const routeScreenOptions = {
@@ -21,6 +22,7 @@ const Routes = () => {
       <Stack.Navigator initialRouteName="Home" screenOptions={routeScreenOptions}>
         <Stack.Screen name="Home" component={Home}  />
         <Stack.Screen name="Detail" component={Detail} />
+        <Stack.Screen name="Search" component={Search} />
       </Stack.Navigator>
     </NavigationContainer>
   );
