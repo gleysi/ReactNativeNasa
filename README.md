@@ -22,7 +22,10 @@ This is a React Native application that fetches and displays images from NASA's 
 
 # 🖼️ Sample UI Layout
 
-<img src="src/assets/nasa-ios.png" width="200"> 
+<img src="src/assets/nasa-ios.png" width="200">
+<img src="src/assets/20-06-25-nasa-api.gif" width="200" alt="NASA API Demo GIF">
+
+*Above: Example of the NASA Image Viewer in action (animated GIF).*
 
 # 🔑 NASA API Key
 To use this app, you will need a <a href="https://api.nasa.gov">NASA API key.</a> You can use the DEMO_KEY for basic usage or register for a free API key for higher rate limits.
