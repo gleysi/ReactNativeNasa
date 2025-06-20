@@ -13,3 +13,8 @@ export type RootStackParams = {
   Detail: PostImage;
   Search: undefined;
 };
+
+export type ImageDateParams = {
+  start_date: string;
+  end_date: string;
+};

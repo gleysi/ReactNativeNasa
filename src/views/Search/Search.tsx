@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View,
   TextInput,
@@ -11,17 +11,17 @@ import {
 } from 'react-native';
 import styles from './styles';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import useCustomImageFilter from '../../hooks/useCustomImageFilter';
 import { PostImage as PostImageTypes, RootStackParams } from '../../types';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Type for navigation prop
 type NavigationProp = NativeStackNavigationProp<RootStackParams, 'Search'>;
+const formatDate = (date: Date) => date.toISOString().split('T')[0];
 
 const SearchByDate = () => {
-  const [images, setImages] = useState<PostImageTypes[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [selectedType, setSelectedType] = useState('image'); // or 'video'
+  const [selectedType, setSelectedType] = useState<'image' | 'video'>('image');
   const [searchTerm, setSearchTerm] = useState('');
 
   // State for date pickers
@@ -33,27 +33,18 @@ const SearchByDate = () => {
 
   const navigation = useNavigation<NavigationProp>();
 
+  const {
+    images,
+    loading,
+    error,
+  } = useCustomImageFilter({
+    start_date: formatDate(startDate),
+    end_date: formatDate(endDate),
+  });
+
   const handleViewPress = (item: PostImageTypes) => {
     navigation.navigate('Detail', { title: item.title, date: item.date, url: item.url, explanation: item.explanation });
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-
-      const formatDate = (date: Date) => date.toISOString().split('T')[0];
-      const res = await fetch(
-        `https://api.nasa.gov/planetary/apod?start_date=${formatDate(
-          startDate
-        )}&end_date=${formatDate(endDate)}&api_key=qxKpG7LHNnLu74o7nhraSLmlPcHXW3JTOKANCHVY`
-      );
-      const data = await res.json();
-      setImages(Array.isArray(data) ? data : [data]);
-      setLoading(false);
-    };
-
-    fetchData();
-  }, [endDate, startDate]);
 
   // The useMemo hook is used to memoize expensive calculations so they don't run on every render unnecessarily.
   const filteredImages = useMemo(() => {
@@ -131,6 +122,8 @@ const SearchByDate = () => {
       {loading ? (
         // Show a loading indicator while fetching data
         <ActivityIndicator size="large" color="#007AFF" style={styles.loader}/>
+      ) : error ? (
+        <Text style={styles.errorText}>{error}</Text>
       ) : (
         // FlatList to display the filtered images
         <FlatList

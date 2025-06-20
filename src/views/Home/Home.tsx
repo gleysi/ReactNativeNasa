@@ -2,8 +2,8 @@ import { View, Text, ActivityIndicator } from 'react-native';
 import Header from '../../components/Header';
 import TodaysImage from '../../components/TodaysImage';
 import LastFiveDaysImages from '../../components/LastFiveDaysImages';
-import useTodaysImage from '../../hooks/useTodaysImage';
-import useLastFiveDaysImages from '../../hooks/useLastFiveDaysImages';
+import useCustomImageFilter from '../../hooks/useCustomImageFilter';
+import { format, sub } from 'date-fns';
 import styles from './styles';
 
 const Home = () => {
@@ -12,12 +12,19 @@ const Home = () => {
     images: todaysImage,
     loading: loadingToday,
     error: errorToday,
-  } = useTodaysImage();
+  } = useCustomImageFilter();
+
+  const date = new Date();
+  const today = format(date, 'yyyy-MM-dd');
+  const fiveDaysAgo = format(sub(date, { days: 5 }), 'yyyy-MM-dd');
   const {
     images: last5DaysImages,
     loading: loadingLast5Days,
     error: errorLast5Days,
-  } = useLastFiveDaysImages();
+  } = useCustomImageFilter({
+    start_date: fiveDaysAgo,
+    end_date: today,
+  });
 
   return (
     <View style={styles.container}>
