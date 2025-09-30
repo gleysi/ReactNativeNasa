@@ -265,18 +265,18 @@ Use useCallback when:
 - You want to avoid re-creating a function passed to a child (e.g., onPress handlers)
 - You want to call the fetch manually (e.g., on button click)
 
-````
+```tsx
 const getArticles = useCallback(async () => {
   const res = await fetch('...');
   const data = await res.json();
   setArticles(data);
 }, []);
-````
+```
 
 - Code Example (Caching a Function)
 In this scenario, we pass a function to a child component that has been optimized with React.memo
 
-````
+```tsx
 import React, { useState, useCallback, memo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
@@ -326,7 +326,7 @@ const UseCallbackExample = () => {
   );
 };
 // ... styles ...
-````
+```
 
 - Key Takeaway:
 When you <b>tap the "Toggle Theme" button</b> (changing the theme state), the <b>UseCallbackExample component re-renders</b>. However, the console.log inside <b>ButtonComponent will not fire</b> because the onPress prop (the handleIncrement function) is the same exact function object reference, thanks to useCallback.
@@ -344,7 +344,7 @@ Scaffold a useApi generic hook that handles loading, error, and data states to r
 - hooks/useApi.ts
 A reusable hook that you can use for any GET endpoint:
 
-````
+```tsx
 import { useEffect, useState, useCallback } from 'react';
 import fetchApi from '../utils/fetch';
 
@@ -384,12 +384,12 @@ const useApi = <T>(urlParams: string = '', autoFetch: boolean = true) => {
 };
 
 export default useApi;
-````
+```
 
 - Use It in a Specific Hook
 For example, in useLastFiveDaysImages.ts:
 
-````
+```tsx
 import { PostImage } from '../types';
 import { format, sub } from 'date-fns';
 import useApi from './useApi';
@@ -411,7 +411,7 @@ const useLastFiveDaysImages = () => {
 };
 
 export default useLastFiveDaysImages;
-````
+```
 
 
 
@@ -419,14 +419,15 @@ export default useLastFiveDaysImages;
 
 This hook is used to <b>memoize a value</b>. React will only re-calculate the memoized value when one of the dependencies has changed. Think of it as caching the result of an expensive calculation.
 
-````
+```tsx
 const filteredUsers = useMemo(() => {
     console.log('Filtering users...');
     return users.filter(user =>
       user.toLowerCase().includes(search.toLowerCase())
     );
   }, [search, users]);
-````
+```
+
 - 🔍 What useMemo Does Here
   It only recomputes the filteredUsers array when the search or users array changes.
 Prevents unnecessary filtering on every keystroke if inputs haven’t changed.
@@ -440,7 +441,7 @@ Imagine you have a complex recipe (a function) that takes 10 minutes to prepare 
 - Code Example (Caching a Value)
 In this example, we have a complex operation (filtering a large list) that should only run if the list itself or the filter criteria change.
 
-````
+```tsx
 import React, { useState, useMemo } from 'react';
 import { View, Text, TextInput, FlatList, StyleSheet } from 'react-native';
 
@@ -497,7 +498,7 @@ const UseMemoExample = () => {
   );
 };
 // ... styles ...
-````
+```
 
 - Key Takeaway:
 If you tap the "Count" button, the component re-renders, but the console.log inside filterExpensiveList will not fire because the dependencies (data and filter) haven't changed.
@@ -510,9 +511,9 @@ The useState hook is a built-in React hook that lets you add state (data that ch
 
 Think of it like a variable that your component watches — and when it changes, the component re-renders to reflect the new value.
 
-````
+```tsx
 const [state, setState] = useState(initialValue);
-````
+```
 - state: The current value
 - setState: The function to update the value
 - initialValue: The starting value
@@ -533,11 +534,11 @@ Examples of side effects:
 - Updating the document title
 - Animations or timers
 
-````
+```tsx
 useEffect(() => {
   // Code to run after component renders
 }, [dependencies]);
-````
+```
 - The function runs after the component renders
 - The dependencies array tells React when to re-run the effect
 
