@@ -200,7 +200,7 @@ React re-renders are generally very fast. Don’t optimize too early — only us
 
 If you fetch similar data in multiple components (e.g., articles, users, etc.), or if your logic is complex (loading, error handling, retries), custom hooks are highly recommended.
 
-````
+```tsx
 // hooks/useArticles.ts
 import { useEffect, useState } from 'react';
 
@@ -229,10 +229,10 @@ const useArticles = () => {
 };
 
 export default useArticles;
-````
+```
 
 Use it in your component 
-````
+```tsx
 import React from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import useArticles from '../../hooks/useArticles';
@@ -251,7 +251,7 @@ const Home = () => {
     </View>
   );
 };
-````
+```
 
 ## Hooks
 
