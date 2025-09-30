@@ -359,7 +359,7 @@ export default useLastFiveDaysImages;
 
 ### useMemo
 
-The useMemo hook in React (and React Native) is used to <b>memoize expensive calculations</b> so they don't run on every render unnecessarily.
+This hook is used to <b>memoize a value</b>. React will only re-calculate the memoized value when one of the dependencies has changed. Think of it as caching the result of an expensive calculation.
 
 ````
 const filteredUsers = useMemo(() => {
@@ -375,6 +375,74 @@ Prevents unnecessary filtering on every keystroke if inputs haven’t changed.
 
 - 🧠 Without useMemo?
 You could just put the filtering inline, but it would run on every render. With large datasets, this could hurt performance.
+
+- Example Analogy:
+Imagine you have a complex recipe (a function) that takes 10 minutes to prepare (calculate a value). If you use useMemo, you only have to prepare it once. If the ingredients (dependencies) haven't changed, you just pull the dish from the fridge (the cached value) instead of making it again.
+
+- Code Example (Caching a Value)
+In this example, we have a complex operation (filtering a large list) that should only run if the list itself or the filter criteria change.
+
+````
+import React, { useState, useMemo } from 'react';
+import { View, Text, TextInput, FlatList, StyleSheet } from 'react-native';
+
+const data = Array.from({ length: 5000 }, (_, i) => ({
+  id: i,
+  name: `Item ${i}`,
+  category: i % 3 === 0 ? 'A' : 'B',
+})); // Imagine a list of 5000 items
+
+// The expensive calculation function
+const filterExpensiveList = (list, filter) => {
+  console.log('--- Running expensive filter calculation ---');
+  return list.filter(item => item.category === filter);
+};
+
+const UseMemoExample = () => {
+  const [filter, setFilter] = useState('A');
+  const [count, setCount] = useState(0); // State that triggers re-renders
+
+  // 1. We use useMemo to cache the result (the filtered list).
+  // 2. This function ONLY runs when 'data' or 'filter' changes.
+  const filteredList = useMemo(() => {
+    return filterExpensiveList(data, filter);
+  }, [data, filter]); // Dependencies array
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>UseMemo Example</Text>
+
+      {/* Input to change the filter (changes 'filteredList') */}
+      <TextInput
+        style={styles.input}
+        placeholder="Enter A or B to filter"
+        onChangeText={setFilter}
+        value={filter}
+      />
+
+      {/* Button to change 'count' (triggers re-render but NOT 'filteredList' update) */}
+      <Text style={styles.countText} onPress={() => setCount(c => c + 1)}>
+        Count: {count} (Tap to re-render)
+      </Text>
+
+      <Text style={styles.resultsText}>
+        Filtered Items: {filteredList.length}
+      </Text>
+
+      {/* A FlatList to display the filtered results */}
+      <FlatList
+        data={filteredList}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({ item }) => <Text style={styles.itemText}>{item.name}</Text>}
+      />
+    </View>
+  );
+};
+// ... styles ...
+````
+
+- Key Takeaway:
+If you tap the "Count" button, the component re-renders, but the console.log inside filterExpensiveList will not fire because the dependencies (data and filter) haven't changed.
 
 ### useState
 
