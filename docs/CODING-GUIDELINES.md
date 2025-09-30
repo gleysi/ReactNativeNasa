@@ -273,6 +273,64 @@ const getArticles = useCallback(async () => {
 }, []);
 ````
 
+- Code Example (Caching a Function)
+In this scenario, we pass a function to a child component that has been optimized with React.memo
+
+````
+import React, { useState, useCallback, memo } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+
+// Child Component optimized with React.memo
+// It will only re-render if its props change (shallow comparison)
+const ButtonComponent = memo(({ onPress, label }) => {
+  console.log(`--- Rendering ${label} Button ---`);
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.button}>
+      <Text style={styles.buttonText}>{label}</Text>
+    </TouchableOpacity>
+  );
+});
+
+const UseCallbackExample = () => {
+  const [count, setCount] = useState(0);
+  const [theme, setTheme] = useState('light'); // A state that causes re-renders
+
+  // WITHOUT useCallback: 'handleIncrement' would be a NEW function object on every render,
+  // forcing ButtonComponent to re-render, even if 'count' wasn't a dependency.
+
+  // 1. We use useCallback to memoize the function 'handleIncrement'.
+  // 2. This function object ONLY changes if 'count' changes.
+  const handleIncrement = useCallback(() => {
+    setCount(c => c + 1);
+  }, []); // Empty dependencies array: The function never changes its identity
+
+  // This function changes every time 'theme' changes
+  const toggleTheme = () => {
+    setTheme(t => (t === 'light' ? 'dark' : 'light'));
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>UseCallback Example</Text>
+      <Text style={styles.countText}>Count: {count}</Text>
+      <Text style={styles.themeText}>Current Theme: {theme}</Text>
+
+      {/* ButtonComponent receives the memoized function */}
+      <ButtonComponent onPress={handleIncrement} label="Increment Count" />
+
+      {/* This button triggers a re-render of the parent component */}
+      <TouchableOpacity onPress={toggleTheme} style={styles.toggleButton}>
+        <Text style={styles.buttonText}>Toggle Theme (Parent Re-render)</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+// ... styles ...
+````
+
+- Key Takeaway:
+When you <b>tap the "Toggle Theme" button</b> (changing the theme state), the <b>UseCallbackExample component re-renders</b>. However, the console.log inside <b>ButtonComponent will not fire</b> because the onPress prop (the handleIncrement function) is the same exact function object reference, thanks to useCallback.
+
 #### Scaffold useApi.ts using useCallback hook
 
 Scaffold a useApi generic hook that handles loading, error, and data states to reduce duplication across custom hooks.
