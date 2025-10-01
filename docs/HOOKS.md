@@ -1,7 +1,8 @@
 - [Hooks](#hooks-1)
-    - [When to use useCallback](#when-to-use-usecallback)
+    - [useCallback](#useCallback)
       - [Scaffold useApi.ts using useCallback hook](#scaffold-useapits-using-usecallback-hook)
     - [useMemo](#usememo)
+    - [useReducer](#useReducer)
     - [useState](#usestate)
     - [useEffect](#useeffect)
 
@@ -166,8 +167,6 @@ const useLastFiveDaysImages = () => {
 export default useLastFiveDaysImages;
 ```
 
-
-
 ## useMemo
 
 This hook is used to <b>memoize a value</b>. React will only re-calculate the memoized value when one of the dependencies has changed. Think of it as caching the result of an expensive calculation.
@@ -255,6 +254,65 @@ const UseMemoExample = () => {
 
 - Key Takeaway:
 If you tap the "Count" button, the component re-renders, but the console.log inside filterExpensiveList will not fire because the dependencies (data and filter) haven't changed.
+
+## useReducer
+
+Code Example: The Shopping Cart
+Imagine managing an item's quantity in a cart.
+
+```tsx
+import React, { useReducer } from 'react';
+import { View, Text, Button, StyleSheet } from 'react-native';
+
+// 1. Initial State
+const initialState = { count: 0 };
+
+// 2. Reducer Function (The 'Logic Handler')
+// It takes the current state and an action, and returns the new state.
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + 1 };
+    case 'decrement':
+      return { count: state.count - 1 };
+    case 'reset':
+      return initialState;
+    default:
+      throw new Error(); // Always handle unknown actions
+  }
+}
+
+const ShoppingCart = () => {
+  // 3. useReducer Hook
+  // It returns the current state and the 'dispatch' function.
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.count}>Quantity: {state.count}</Text>
+      
+      <Button 
+        title="Add to Cart (+)" 
+        // 4. Dispatching the Action
+        onPress={() => dispatch({ type: 'increment' })} 
+      />
+      <Button 
+        title="Remove (-)" 
+        onPress={() => dispatch({ type: 'decrement' })} 
+        disabled={state.count <= 0}
+      />
+      <Button 
+        title="Reset" 
+        onPress={() => dispatch({ type: 'reset' })} 
+        color="red"
+      />
+    </View>
+  );
+};
+
+// ... styles ...
+```
+Interview Focus: The key takeaway for an interviewer is that useReducer centralizes state management, making complex updates predictable, testable, and easier to scale.
 
 ## useState
 
