@@ -5,7 +5,7 @@
     - [useReducer](#useReducer)
     - [useState](#usestate)
     - [useEffect](#useeffect)
-
+- [When to Use a Custom Hook] (#when-to-use-a-custom-hook)
 
 # Hooks
 
@@ -383,3 +383,60 @@ useEffect(() => {
 | [] (empty)    | Only once — when the component mounts   |
 | [someValue]    | When someValue changes   |
 | No array | On every render
+
+## When to Use a Custom Hook
+
+If you fetch similar data in multiple components (e.g., articles, users, etc.), or if your logic is complex (loading, error handling, retries), custom hooks are highly recommended.
+
+```tsx
+// hooks/useArticles.ts
+import { useEffect, useState } from 'react';
+
+const useArticles = () => {
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<null | string>(null);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const res = await fetch('https://api.example.com/articles');
+        const data = await res.json();
+        setArticles(data);
+      } catch (err) {
+        setError('Failed to fetch articles');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
+  return { articles, loading, error };
+};
+
+export default useArticles;
+```
+
+Use it in your component 
+```tsx
+import React from 'react';
+import { View, Text, ActivityIndicator } from 'react-native';
+import useArticles from '../../hooks/useArticles';
+
+const Home = () => {
+  const { articles, loading, error } = useArticles();
+
+  if (loading) return <ActivityIndicator />;
+  if (error) return <Text>{error}</Text>;
+
+  return (
+    <View>
+      {articles.map(article => (
+        <Text key={article.id}>{article.title}</Text>
+      ))}
+    </View>
+  );
+};
+```
