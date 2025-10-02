@@ -259,26 +259,28 @@ If you tap the "Count" button, the component re-renders, but the console.log ins
 
 The useReducer hook is often compared to a lighter version of Redux, designed for managing more <b>complex state logic</b> within a single component or for <b>managing multiple related state values</b>.
 
-## Comparación: `useState` vs. `useReducer` en React
+### Comparison: `useState` vs. `useReducer` in React
 
-| Característica | `useState` | `useReducer` |
+| Feature | `useState` | `useReducer` |
 | :--- | :--- | :--- |
-| **Complejidad** | Estado **simple**: valores independientes como un booleano, string o número. | Estado **complejo**: objetos/arrays donde las actualizaciones involucran lógica compleja o múltiples subvalores. |
-| **Actualizaciones** | Actualización **directa**: `setCount(count + 1)`. | **Dispatch de acciones**: `dispatch({ type: 'INCREMENT' })`. |
-| **Ubicación de la Lógica** | La lógica de actualización está dispersa en los *event handlers* del componente. | La lógica de actualización está **centralizada** en una única función **Reducer** (fuera del componente). |
-| **Dependencia** | El siguiente estado a menudo **no depende** fuertemente del estado anterior. | El siguiente estado **depende explícitamente** del estado anterior (recibe `state` y retorna `newState`). |
+| **Complexity** | **Simple** state: independent values like a boolean, string, or number. | **Complex** state: objects/arrays where updates involve complex logic or multiple sub-values. |
+| **Updates** | **Direct** update: `setCount(count + 1)`. | **Action Dispatch**: `dispatch({ type: 'INCREMENT' })`. |
+| **Logic Location** | Update logic is spread across the component's *event handlers*. | Update logic is **centralized** in a single **Reducer** function (outside the component). |
+| **Dependency** | The next state often **doesn't depend** heavily on the previous state. | The next state **explicitly depends** on the previous state (it receives `state` and returns `newState`). |
 
-### ¿Qué es `dispatch`?
+### What is `dispatch`?
 
-#### Características clave de `dispatch`:
+In the context of `useReducer` (and Redux), `dispatch` is the key function used to initiate a state update.
 
-* **Es una Función:** Es el mecanismo que llamas desde los *event handlers* de tu componente (`onPress`, `onChangeText`, etc.).
-    * **Sintaxis:** `dispatch(actionObject)`
+### Key Characteristics of `dispatch`:
 
-* **Envía una Acción:** El argumento que pasas a `dispatch` es el **Action Object** (Objeto de Acción). Este objeto es un **objeto JavaScript plano** que describe qué acaba de suceder en la aplicación.
-    * **Ejemplo:** `{ type: 'INCREMENT' }` o `{ type: 'USER_LOGOUT' }`
+* **It is a Function:** It's the mechanism you call from your component's *event handlers* (`onPress`, `onChangeText`, etc.).
+    * **Syntax:** `dispatch(actionObject)`
 
-* **Activa el Reducer:** Cuando se llama a `dispatch`, React toma el estado actual y el objeto de acción, y se los pasa inmediatamente a la función **reducer** que definiste.
+* **It Sends an Action:** The argument you pass to `dispatch` is the **Action Object**. This object is a **plain JavaScript object** that describes what just happened in the application.
+    * **Example:** `{ type: 'INCREMENT' }` or `{ type: 'USER_LOGOUT' }`
+
+* **It Triggers the Reducer:** When `dispatch` is called, React takes the current state and the action object, and immediately passes both to the **reducer** function you defined.
 
 ### Code Example: The Shopping Cart
 Imagine managing an item's quantity in a cart.
