@@ -5,7 +5,7 @@
     - [useReducer](#useReducer)
     - [useState](#usestate)
     - [useEffect](#useeffect)
-- [When to Use a Custom Hook] (#when-to-use-a-custom-hook)
+- [When to Use a Custom Hook](#when-to-use-a-custom-hook)
 
 # Hooks
 
