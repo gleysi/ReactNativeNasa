@@ -8,10 +8,10 @@
       - [Imperative Access to UI Elements (Refs)](#imperative-access-to-ui-elements-refs-)
       - [Common React Native Components with `useRef`](#common-react-native-components-with-useref)
     - [useEffect](#useeffect)
-      - [Functional Component Lifecycle: `useEffect` in Depth 🔄](#functional-component-lifecycle-useeffect-in-depth-🔄)
+      - [Functional Component Lifecycle: `useEffect` in Depth 🔄](#functional-component-lifecycle-useeffect-in-depth-)
         - [1. The Syntax and Purpose](#1-the-syntax-and-purpose)
         - [2. The Three Lifecycle Scenarios](#2-the-three-lifecycle-scenarios)
-        - [3. Common Interview Pitfall: Dependencies ⚠️](#3-common-interview-pitfall-dependencies-⚠️)
+        - [3. Common Interview Pitfall: Dependencies ⚠️](#3-common-interview-pitfall-dependencies-)
       - [Interview Simulation: Cleanup Challenge](#interview-simulation-cleanup-challenge)
 - [When to Use a Custom Hook](#when-to-use-a-custom-hook)
 
