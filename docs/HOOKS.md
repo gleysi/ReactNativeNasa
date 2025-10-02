@@ -257,7 +257,30 @@ If you tap the "Count" button, the component re-renders, but the console.log ins
 
 ## useReducer
 
-Code Example: The Shopping Cart
+The useReducer hook is often compared to a lighter version of Redux, designed for managing more <b>complex state logic</b> within a single component or for <b>managing multiple related state values</b>.
+
+## Comparación: `useState` vs. `useReducer` en React
+
+| Característica | `useState` | `useReducer` |
+| :--- | :--- | :--- |
+| **Complejidad** | Estado **simple**: valores independientes como un booleano, string o número. | Estado **complejo**: objetos/arrays donde las actualizaciones involucran lógica compleja o múltiples subvalores. |
+| **Actualizaciones** | Actualización **directa**: `setCount(count + 1)`. | **Dispatch de acciones**: `dispatch({ type: 'INCREMENT' })`. |
+| **Ubicación de la Lógica** | La lógica de actualización está dispersa en los *event handlers* del componente. | La lógica de actualización está **centralizada** en una única función **Reducer** (fuera del componente). |
+| **Dependencia** | El siguiente estado a menudo **no depende** fuertemente del estado anterior. | El siguiente estado **depende explícitamente** del estado anterior (recibe `state` y retorna `newState`). |
+
+### ¿Qué es `dispatch`?
+
+#### Características clave de `dispatch`:
+
+* **Es una Función:** Es el mecanismo que llamas desde los *event handlers* de tu componente (`onPress`, `onChangeText`, etc.).
+    * **Sintaxis:** `dispatch(actionObject)`
+
+* **Envía una Acción:** El argumento que pasas a `dispatch` es el **Action Object** (Objeto de Acción). Este objeto es un **objeto JavaScript plano** que describe qué acaba de suceder en la aplicación.
+    * **Ejemplo:** `{ type: 'INCREMENT' }` o `{ type: 'USER_LOGOUT' }`
+
+* **Activa el Reducer:** Cuando se llama a `dispatch`, React toma el estado actual y el objeto de acción, y se los pasa inmediatamente a la función **reducer** que definiste.
+
+### Code Example: The Shopping Cart
 Imagine managing an item's quantity in a cart.
 
 ```tsx
