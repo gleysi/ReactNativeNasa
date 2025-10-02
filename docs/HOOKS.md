@@ -4,6 +4,9 @@
     - [useMemo](#usememo)
     - [useReducer](#useReducer)
     - [useState](#usestate)
+    - [useRef](#useref)
+      - [Imperative Access to UI Elements (Refs)](#imperative-access-to-ui-elements-refs)
+      - [Common React Native Components with `useRef`](#common-react-native-components-with-useref)
     - [useEffect](#useeffect)
 - [When to Use a Custom Hook](#when-to-use-a-custom-hook)
 
@@ -353,6 +356,72 @@ const [state, setState] = useState(initialValue);
 - state: The current value
 - setState: The function to update the value
 - initialValue: The starting value
+
+
+
+## useRef
+<b>Provides mutable storage and does not trigger re-renders</b>, making it ideal for interacting with native elements, storing timer IDs, or holding previous state values.
+
+1. <b>Accessing Native Elements (Like the DOM):</b> In React Native, this is used to access the underlying view or a component like a TextInput to call imperative methods on it (e.g., .focus(), .measure(), or controlling a ScrollView).
+
+2. <b>Storing a Mutable Value:</b> It allows you to keep a value that persists across component re-renders, but <b>does not trigger a re-render when it changes</b>.
+
+It is used for values that need to **persist between renders** but should **not affect the user interface** (such as timer identifiers, or a direct reference to a user interface element like a TextInput).
+
+<b>Code Example: Focusing an Input</b>
+
+```tsx
+import React, { useRef } from 'react';
+import { View, TextInput, Button, StyleSheet } from 'react-native';
+
+const UseRefExample = () => {
+  // 1. Initialize the ref object
+  const inputRef = useRef(null); 
+
+  const handleFocus = () => {
+    // 2. Access the current value (the TextInput element)
+    // and call its native focus() method.
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+  
+  // Example of storing a mutable value (e.g., a timer ID)
+  const intervalIdRef = useRef(null); 
+  // You would use this ref inside a useEffect to store and clear a timer
+  // intervalIdRef.current = setInterval(...)
+
+  return (
+    <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        placeholder="Focus me with the button!"
+        // 3. Attach the ref to the element
+        ref={inputRef} 
+      />
+      <Button 
+        title="Focus Input" 
+        onPress={handleFocus} 
+      />
+      <Text style={styles.note}>
+        *Changing the ref value does NOT cause a re-render.
+      </Text>
+    </View>
+  );
+};
+// ... styles ...
+```
+
+### Imperative Access to UI Elements (Refs) 📲
+
+This is the use case you're familiar with. You use a **ref** when you need to **imperatively (directly)** trigger a function or read a property from a component, which isn't handled through typical React props and state.
+
+
+### Common React Native Components with `useRef`:
+
+* **`ScrollView` / `FlatList`**: To programmatically scroll to a specific position using methods like `.scrollTo()` or `.scrollToIndex()`.
+* **`Animated.View` or Other `Animated` Components**: To access and control complex animations or native handles.
+* **Custom View Components**: If you create a custom component and need the parent to call a specific function inside it (you achieve this by using **`useImperativeHandle`** inside the child component, along with **`useRef`** in the parent).
 
 ## useEffect
 
