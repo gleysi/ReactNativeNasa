@@ -235,4 +235,4 @@ They revolutionized the way we write React components by allowing functional com
 
 A JavaScript function whose name starts with use (e.g., useAuth, useLocation). It uses built-in hooks (useState, useEffect, etc.) to encapsulate stateful logic and return data/functions.
 
-<a href="HOOKS.md#2-the-three-lifecycle-scenarios">HOOKS.md</a>
+<a href="HOOKS.md#hooks-1">HOOKS.md</a>
