@@ -1,6 +1,6 @@
 - [Design Patterns](#design-patterns)
-  - [1. The HOC (Higher Order Component) pattern](#1.-the-hoc-higher-order-component-pattern)
-  - [2. Compound Components] (#-compound-components)
+  - [1. The HOC (Higher Order Component) pattern](1-the-hoc-higher-order-component-pattern)
+  - [2. Compound Components] (#2-compound-components)
 
 # Design Patterns
 
