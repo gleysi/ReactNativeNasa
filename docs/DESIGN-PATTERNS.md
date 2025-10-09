@@ -2,6 +2,7 @@
   - [1. The HOC (Higher Order Component) pattern](#1-the-hoc-higher-order-component-pattern)
   - [2. Compound Components](#2-compound-components)
   - [3. Render Props](#3-render-props)
+  - [4. Hooks Pattern](#4-hooks-pattern)
 
 # Design Patterns
 
@@ -223,3 +224,15 @@ const PostComponent = () => (
 
 - In cases where rendering logic is specific to a single component and will not be reused.
 - When the Render Props pattern results in unnecessary complexity and makes the code harder to understand.
+
+## 4. Hooks pattern
+
+The React Hooks API, introduced in React 16.8, has fundamentally transformed how we approach React component design. 
+
+Hooks were developed to address common concerns encountered by React developers. 
+
+They revolutionized the way we write React components by allowing functional components to access features like state, lifecycle methods, context, and refs, which were previously exclusive to class components.
+
+A JavaScript function whose name starts with use (e.g., useAuth, useLocation). It uses built-in hooks (useState, useEffect, etc.) to encapsulate stateful logic and return data/functions.
+
+<a href="HOOKS.md#2-the-three-lifecycle-scenarios">HOOKS.md</a>
