@@ -1,6 +1,7 @@
 - [Design Patterns](#design-patterns)
   - [1. The HOC (Higher Order Component) pattern](#1-the-hoc-higher-order-component-pattern)
   - [2. Compound Components](#2-compound-components)
+  - [3. Render Props](#3-render-props)
 
 # Design Patterns
 
@@ -175,3 +176,50 @@ function App() {
   );
 }
 ```
+## 3. Render Props
+The Render Props pattern involves a component that includes a prop (usually called render, or sometimes children if it's a function) whose value is a function that tells the component what to render.
+
+The Render Props pattern is a technique in React that allows the sharing of code between components through a special prop that indicates a function. This pattern delegates the responsibility of rendering a certain part of the component to the function provided as a prop, thus allowing for greater reuse and flexibility in component composition.
+
+### How it Works
+- The parent component (the one holding the shared logic) renders nothing itself.
+- It executes the function provided through the render prop.
+- It passes its internal state/logic as arguments to that function, allowing the consuming component to decide how to use the data.
+
+```tsx
+// Render Props Component (The Logic Provider)
+const DataLoader = ({ render }) => {
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
+  
+  useEffect(() => {
+    // Logic to fetch data...
+  }, []);
+
+  // Executes the 'render' prop, passing its internal state as arguments
+  return render({ data, error, isLoading: data.length === 0 });
+};
+
+// Usage: The component consuming the data
+const PostComponent = () => (
+  <DataLoader 
+    // The prop 'render' is a function that receives the provider's state
+    render={({ data, error, isLoading }) => {
+      if (isLoading) return <Text>Loading posts...</Text>;
+      if (error) return <Text>Error: {error}</Text>;
+      
+      return <FlatList data={data} renderItem={({ item }) => <Text>{item.title}</Text>} />;
+    }} 
+  />
+);
+```
+### When to use
+
+- When you need to share rendering logic between multiple components.
+- To create highly customizable components that can adapt to different use cases.
+- When you want to separate presentation logic from business logic in components.
+
+### When not to use
+
+- In cases where rendering logic is specific to a single component and will not be reused.
+- When the Render Props pattern results in unnecessary complexity and makes the code harder to understand.
