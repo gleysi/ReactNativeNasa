@@ -1,8 +1,12 @@
 - [Design Patterns](#design-patterns)
-  - [1. The HOC (Higher Order Component) pattern](#1-the-hoc-higher-order-component-pattern)
-  - [2. Compound Components](#2-compound-components)
+  - [1. The HOC (Higher Order Component) pattern](1-the-hoc-higher-order-component-pattern)
+  - [2. Compound Components] (#2-compound-components)
   - [3. Render Props](#3-render-props)
-  - [4. Hooks Pattern](#4-hooks-pattern)
+  - [4. Container/Presentational pattern](#4-containerpresentational-pattern)
+    - [1. Presentational Components (Dumb, Stateless) 🎨](#1-presentational-components-dumb-stateless-)
+    - [2. Container Components (Smart, Stateful) 🧠](#2-container-components-smart-stateful-) 
+  - [5. Hooks Pattern](#5-hooks-pattern)
+
 
 # Design Patterns
 
@@ -225,7 +229,75 @@ const PostComponent = () => (
 - In cases where rendering logic is specific to a single component and will not be reused.
 - When the Render Props pattern results in unnecessary complexity and makes the code harder to understand.
 
-## 4. Hooks pattern
+## 4 . Container/Presentational pattern
+
+The **Container/Presentational pattern** (also known as **Smart/Dumb components** or **Stateful/Stateless components**) is a popular design pattern in React and React Native for structuring an application's components based on their responsibilities. It helps **separate concerns**, making components more reusable, testable, and easier to manage.
+
+This pattern divides components into two main categories:
+
+### 1. Presentational Components (Dumb, Stateless) 🎨
+
+Presentational components are primarily concerned with **how things look**.
+
+* **Responsibility:** To render the UI (e.g., buttons, text, images, lists). They are concerned with presentation and styling.
+* **Data Source:** They receive data and callbacks (functions) **exclusively via props**.
+* **State/Logic:** They **rarely have their own internal state** and contain **no business logic**, data fetching, or manipulation.
+* **Structure:** They are usually **functional components** and often have no knowledge of things like Redux, contexts, or API calls—they are **pure functions of their props**.
+
+**Example:** A `Button` component that accepts `title` and an `onPress` function via props and just renders the touchable element.
+
+```tsx
+// Presentational Component: Button
+const MyButton = ({ title, onPress, style }) => (
+  <TouchableOpacity onPress={onPress} style={style}>
+    <Text>{title}</Text>
+  </TouchableOpacity>
+);
+
+// This component is only concerned with rendering
+```
+
+### 2. Container Components (Smart, Stateful) 🧠
+
+Container components are primarily concerned with **how things work** (data and logic).
+
+* **Responsibility:** To manage state, handle side effects (like data fetching), subscribe to data stores (e.g., Redux, Context), and implement business logic.
+* **Data Source:** They often fetch data directly from **APIs, storage, or global state management**.
+* **Data Flow:** They **pass the data and behavior (callbacks)** down to their Presentational children as props.
+* **Structure:** They are often class components or functional components utilizing **Hooks** like `useState`, `useEffect`, and `useContext`/`useSelector`. They do not usually have much markup of their own, often just rendering other components.
+
+**Example:** A `ProfileContainer` component that fetches user data and passes it to a `ProfileDetails` (Presentational) component.
+
+```tsx
+// Container Component: ProfileContainer
+const ProfileContainer = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // 1. Fetch data (e.g., API call)
+    fetch('/api/user/123').then(setUser);
+  }, []);
+
+  const handleLogout = () => {
+    // 2. Contains business logic
+    console.log('Logging out...');
+    // ... API call to log out ...
+  };
+
+  // 3. Passes data and functions to the Presentational component
+  return (
+    <ProfileDetails 
+      userData={user} 
+      onLogoutPress={handleLogout} 
+      isLoading={!user} 
+    />
+  );
+};
+
+// This component is only concerned with data and logic
+```
+
+## 5. Hooks pattern
 
 The React Hooks API, introduced in React 16.8, has fundamentally transformed how we approach React component design. 
 
@@ -235,4 +307,4 @@ They revolutionized the way we write React components by allowing functional com
 
 A JavaScript function whose name starts with use (e.g., useAuth, useLocation). It uses built-in hooks (useState, useEffect, etc.) to encapsulate stateful logic and return data/functions.
 
-<a href="HOOKS.md#hooks-1">HOOKS.md</a>
+<a href="HOOKS.md#2-the-three-lifecycle-scenarios">HOOKS.md</a>
