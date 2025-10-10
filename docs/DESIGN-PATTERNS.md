@@ -6,7 +6,7 @@
     - [1. Presentational Components (Dumb, Stateless) 🎨](#1-presentational-components-dumb-stateless-)
     - [2. Container Components (Smart, Stateful) 🧠](#2-container-components-smart-stateful-) 
   - [5. Hooks Pattern](#5-hooks-pattern)
-
+- [React Design Patterns Summary](#react-design-patterns-summary)
 
 # Design Patterns
 
@@ -308,3 +308,13 @@ They revolutionized the way we write React components by allowing functional com
 A JavaScript function whose name starts with use (e.g., useAuth, useLocation). It uses built-in hooks (useState, useEffect, etc.) to encapsulate stateful logic and return data/functions.
 
 <a href="HOOKS.md#2-the-three-lifecycle-scenarios">HOOKS.md</a>
+
+# React Design Patterns Summary
+
+| No. | Design Pattern | Primary Goal | Mechanism | Key Benefit | Main Drawback / Caveat |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **1.** | **HOC (Higher-Order Component)** | Code Reuse (Logic Injection) | A function that takes a Component and returns a new, enhanced Component with added props/logic. | Reuses non-visual, stateful logic across multiple components easily. | Can lead to **Prop Name Collisions** and **wrapper hell** (complex component tree). |
+| **2.** | **Compound Components** | Managed Composition (UI Grouping) | Uses a Parent Component to manage state, and its Child Components (exposed as static properties, e.g., `Toggle.Button`) consume that state, usually via React **Context**. | Provides a flexible, expressive, and clear API for complex, interdependent UI parts (e.g., a Select box). | The state manager (Context) and consumers must be defined within the same component structure. |
+| **3.** | **Render Props** | Logic Sharing (Data Injection) | A component that takes a prop (usually `render` or `children`) whose value is a function. The component executes this function, passing its internal state/logic as arguments. | Allows consumers to fully control the rendering of the component based on the injected logic/data. | Can result in nested JSX known as **"Inversion of Control"** or **"Render Prop Hell"** when composing multiple providers. |
+| **4.** | **Container/Presentational** | Separation of Concerns (Structure) | **Container (Smart)** components manage logic/state and pass data down. **Presentational (Dumb)** components handle only UI/styling via props. | Improves **Testability and Maintainability** by clearly separating what to render from how to get the data. | Can become rigid and verbose for simple components, often superseded by Hooks for local state management. |
+| **5.** | **Hooks Pattern** | Logic Abstraction (Modern Reuse) | A JavaScript function whose name starts with `use` (e.g., `useData`) that encapsulates stateful logic, side effects, and returns data/functions. | Eliminates the need for wrappers (HOCs/Render Props) by extracting logic into reusable, testable functions that are called directly inside functional components. | Requires understanding the **"Rules of Hooks"** (only call at the top level of functional components/custom hooks). |
