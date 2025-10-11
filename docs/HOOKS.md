@@ -13,6 +13,7 @@
         - [2. The Three Lifecycle Scenarios](#2-the-three-lifecycle-scenarios)
         - [3. Common Interview Pitfall: Dependencies ⚠️](#3-common-interview-pitfall-dependencies-)
       - [Interview Simulation: Cleanup Challenge](#interview-simulation-cleanup-challenge)
+    - [useContext](#usecontext)
 - [When to Use a Custom Hook](#when-to-use-a-custom-hook)
 
 # Hooks
@@ -510,6 +511,64 @@ When an interviewer asks why you chose the empty array, your response should hig
 2. <b>Prevents Memory Leaks (Unmounting):</b> The ``return`` function ensures that when the ``ChatScreen`` component is destroyed (the user navigates away), the ``unsubscribe`` function is called. This is crucial because it removes the listener, preventing the component from holding onto memory and reacting to events when it no longer exists.
 
 If you used no array at all, the listener would be added on every single re-render, creating thousands of unnecessary listeners and causing an immediate memory leak.
+
+## useContext
+
+The `useContext` hook is the Consumer element of the Context API. Its entire job is to provide any component, regardless of how deep it is in the component tree, with direct access to the `value` established by the closest matching `Context.Provider` above it.
+
+### Syntax
+
+```tsx
+const contextData = useContext(MyContextObject);
+```
+
+### Key Characteristics and Function
+
+* **Direct Access, No Props:** You pass the entire **Context Object** (the one created with `createContext`) to `useContext`. The hook then immediately returns the object contained in the Provider's `value` prop.
+    * **Example:** If your provider passes `{ user: 'John', theme: 'dark' }`, the `contextData` variable will hold that entire object.
+
+* **Automatic Re-render:** This is the most critical feature: If the `value` prop in the Provider changes (even if only one property inside the value object changes), **every component using that Context via `useContext` will automatically re-render**. This is how state updates propagate globally.
+
+* **Dependency-Free:** Unlike `useEffect` or `useCallback`, the `useContext` hook **does not take a dependency array**. Its reliance is implicit: it depends only on the value of the Context Provider it's connected to.
+
+### Example 
+
+If the Provider is the Central Library that holds all the data, the `useContext` hook is your Global Library Card.
+
+- Any component that has the card (`useContext(AuthContext)`) can walk right up to the library and check out the data (the `value` object) directly.
+
+- The data is instantly available, and you didn't have to ask every neighbor to pass the book down the street (prop drilling).
+
+```tsx
+// AuthContext.js (The Context Object)
+export const AuthContext = createContext(null);
+// ... AuthProvider component sets the value { user, login, logout }
+```
+
+A component uses it like this:
+
+```tsx
+import React, { useContext } from 'react';
+import { AuthContext } from './AuthContext'; 
+
+const LogoutButton = () => {
+    // We only need the logout function from the Context value
+    const { user, logout } = useContext(AuthContext); 
+    
+    // When 'logout' is called, it updates the state in the Provider.
+    // This state change causes the Provider's 'value' to change, 
+    // which in turn causes this component (and any other consumer) to re-render.
+    
+    if (!user) return null;
+
+    return (
+        <Button 
+            title="Log Out User" 
+            onPress={logout} 
+        />
+    );
+};
+```
 
 ## When to Use a Custom Hook
 
