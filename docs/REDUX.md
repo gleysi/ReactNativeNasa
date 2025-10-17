@@ -2,6 +2,8 @@
 
 <b> A JS library for predictable and maintainable global state management</b>
 
+<a href="https://redux.js.org/tutorials/quick-start#usage-summary" target="blank">Redux Quick Start</a>
+
 ## React Redux
 
 ### It lets your React components read data from a Redux store, and dispatch actions to the store to update state.
@@ -26,4 +28,4 @@ The Redux DevTools make it easy to trace <b>when, where, why, and how your appli
 
 Redux's architecture lets you log changes, use <b>"time-travel debugging",</b> and even send complete error reports to a server.
 
-<a href="https://redux-toolkit.js.org/tutorials/quick-start" target="blank">Redux Quick Start</a>
+
