@@ -1,4 +1,3 @@
-# React Navigation
 
 - [React Navigation](#react-navigation)
   - [Navigating between screens](#navigating-between-screens)
