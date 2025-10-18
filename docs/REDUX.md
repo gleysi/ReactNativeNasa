@@ -1,3 +1,7 @@
+- [Redux](#redux)
+  - [React Redux](#react-redux)
+  - [Redux Toolkit](#redux-toolkit)
+    
 # Redux
 
 <b> A JS library for predictable and maintainable global state management</b>
