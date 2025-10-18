@@ -1,3 +1,8 @@
+- [Context API vs. Redux](#context-api-vs-redux)
+  - [Context API: Built-in State Sharing](#context-api-built-in-state-sharing)
+  - [Redux: Predictable Global State](#redux-predictable-global-state)
+  - [Conclusion for React Native Development](#conclusion-for-react-native-development)
+
 # Context API vs. Redux
 
 | Característica | Context API | Redux |
