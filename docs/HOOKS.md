@@ -178,7 +178,14 @@ export default useLastFiveDaysImages;
 
 ## useMemo
 
-<b>useMemo(calculateValue, dependencies)</b>
+`<b>useMemo(calculateValue, dependencies)</b>`
+
+<b>Parameters:</b>
+
+`calculateValue`: The function calculating the value that you want to cache. It should be pure, should take no arguments, and should return a value of any type. React will call your function during the initial render. On next renders, React will return the same value again if the `dependencie`s have not changed since the last render. Otherwise, it will call `calculateValue`, return its result, and store it so it can be reused later.
+
+`dependencies`: The list of all reactive values referenced inside of the `calculateValue` code. 
+The list of dependencies must have a constant number of items and be written inline like `[dep1, dep2, dep3]`. React will compare each dependency with its previous value using the Object.is comparison.
 
 This hook is used to <b>memoize a value</b>. React will only re-calculate the memoized value when one of the dependencies has changed. Think of it as caching the result of an expensive calculation.
 
@@ -191,12 +198,6 @@ const filteredUsers = useMemo(() => {
   }, [search, users]);
 ```
 
-<b>Parameters</b>
-`calculateValue`: The function calculating the value that you want to cache. It should be pure, should take no arguments, and should return a value of any type. React will call your function during the initial render. On next renders, React will return the same value again if the `dependencie`s have not changed since the last render. Otherwise, it will call `calculateValue`, return its result, and store it so it can be reused later.
-
-`dependencies`: The list of all reactive values referenced inside of the `calculateValue` code. 
-The list of dependencies must have a constant number of items and be written inline like `[dep1, dep2, dep3]`. React will compare each dependency with its previous value using the Object.is comparison.
-
 - 🔍 What useMemo Does Here
   It only recomputes the filteredUsers array when the search or users array changes.
 Prevents unnecessary filtering on every keystroke if inputs haven’t changed.
@@ -207,7 +208,8 @@ You could just put the filtering inline, but it would run on every render. With 
 - Example Analogy:
 Imagine you have a complex recipe (a function) that takes 10 minutes to prepare (calculate a value). If you use useMemo, you only have to prepare it once. If the ingredients (dependencies) haven't changed, you just pull the dish from the fridge (the cached value) instead of making it again.
 
-- Code Example (Caching a Value)
+<b>Code Example (Caching a Value):</b>
+
 In this example, we have a complex operation (filtering a large list) that should only run if the list itself or the filter criteria change.
 
 ```tsx
