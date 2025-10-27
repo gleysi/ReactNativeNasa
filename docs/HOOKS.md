@@ -15,6 +15,7 @@
       - [Interview Simulation: Cleanup Challenge](#interview-simulation-cleanup-challenge)
     - [useContext](#usecontext)
 - [When to Use a Custom Hook](#when-to-use-a-custom-hook)
+- [React's Memoization and State Optimization Tools](#reacts-memoization-and-state-optimization-tools)
 
 # Hooks
 
@@ -636,3 +637,11 @@ const Home = () => {
   );
 };
 ```
+## React's Memoization and State Optimization Tools
+
+| Feature | `React.memo` | `useMemo()` | `useCallback()` | Redux Toolkit Optimization |
+| :--- | :--- | :--- | :--- | :--- |
+| **Target** | The entire **Component** (Functional Component). | A specific **Value** (object, array, or calculation). | A specific **Function** (a handler or callback). | **Global/Derived State** (data extracted from the Store). |
+| **Purpose** | To **prevent unnecessary re-renders** of the component. | To **prevent unnecessary recalculation** of an expensive value. | To **prevent unnecessary recreation** of a function instance (stable identity). | To ensure the component only re-renders when the **specific data it consumes** changes (`useSelector`), and to **memoize complex data** (`createSelector`). |
+| **When to Use It** | On a **"Dumb" (Presentational) component** that re-renders frequently due to parent state changes, but whose props rarely change. | 1. The result of a calculation is expensive to compute. 2. You need to pass a **stable object/array** as a prop to a `React.memo` child. | You are passing a **function** as a prop to a **`React.memo` child component** to ensure its prop value remains stable. | **Read Data:** Use `useSelector` to read state. **Write Logic:** Use `createSlice` for state logic. **Optimize Read:** Use `createSelector` (Reselect) for complex, memoized reading. |
+| **Key Toolkit Flow & Syntax** | ```javascript import { memo } from "react"; export default memo(MyComponent); ``` | ```javascript import { useMemo } from "react"; const val = useMemo(() => heavyFunction(a, b), [a, b]); ``` | ```javascript import { useCallback } from "react"; const fn = useCallback(() => handler(id), [id]); ``` | 1. **Setup:** `configureStore({ reducer: { ... } })` 2. **Logic:** `createSlice({ name, initialState, reducers })` 3. **Read/Write:** <br> `const data = useSelector(selector);` <br> `const dispatch = useDispatch();` <br> `dispatch(actionCreator(payload));` |
