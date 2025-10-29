@@ -1,5 +1,14 @@
 # Performance and Mobile App Optimization
 
+- [Performance and Mobile App Optimization](#performance-and-mobile-app-optimization)
+  - [Render Optimization](#render-optimization)
+  - [Debugging and Error Handling](#debugging-and-error-handling)
+    - [Opening the Dev Menu](#opening-the-dev-menu)
+    - [Opening DevTools](#opening-devtools)
+    - [LogBox](#logbox)
+    - [Performance Monitor](#performance-monitor)
+
+# Performance and Mobile App Optimization
 
 | Main Topic | Actionable Sub-topics |
 | :--- | :--- |
@@ -95,3 +104,37 @@ const HomeScreen = () => {
 "I used `React.memo` on `ProductItem` to stop unnecessary re-renders. This works because React will only check if its props have changed via a shallow comparison. Since the `product` object and the function `onSelect` are the props, I must ensure they have a <b>stable identity</b>."
 
 "To guarantee this stable identity for the `onSelect` function, I define it in the parent using `useCallback`. Because its dependency array is empty (`[]`), the function reference remains the same object across every re-render of `HomeScreen` (even when `clickCount` changes), satisfying `React.memo` and preventing the entire list from re-rendering."
+
+
+## Debugging and Error Handling
+
+### Opening the Dev Menu
+React Native provides an in-app developer menu providing access to debugging features. You can access the Dev Menu by shaking your device or via keyboard shortcuts:
+
+- iOS Simulator: `Ctrl` + `Cmd ⌘` + `Z` (or Device > Shake)
+- Android emulators: `Cmd ⌘` + `M` (macOS) or `Ctrl` + `M` (Windows and Linux)
+
+<img src="https://github.com/gleysi/ReactNativeNasa/blob/main/src/assets/debug_app.jpg?raw=true"/>
+
+### Opening DevTools
+
+<a href="https://reactnative.dev/docs/react-native-devtools">React Native DevTools</a> is our built-in debugger for React Native. It allows you to inspect and understand how your JavaScript code is running, similar to a web browser.
+
+To open DevTools, either:
+
+- Select "Open DevTools" in the Dev Menu.
+- Press `j` from the CLI (`npx react-native start`).
+
+On first launch, DevTools will open to a welcome panel, along with an open console drawer where you can view logs and interact with the JavaScript runtime. From the top of the window, you can navigate to other panels, including the integrated React Components Inspector and Profiler.
+
+<img src="https://github.com/gleysi/ReactNativeNasa/blob/main/src/assets/debug_devtools.jpg?raw=true"/>
+
+### LogBox
+LogBox is an in-app tool that displays when warnings or errors are logged by your app.
+
+<img src="https://github.com/gleysi/ReactNativeNasa/blob/main/src/assets/logbox.jpg?raw=true"/>
+
+### Performance Monitor
+On Android and iOS, an in-app performance overlay can be toggled during development by selecting "Perf Monitor" in the Dev Menu. Learn more about this feature <a href="https://reactnative.dev/docs/performance">here</a>.
+
+<img src="https://github.com/gleysi/ReactNativeNasa/blob/main/src/assets/performance_monitor.jpg?raw=true"/>
