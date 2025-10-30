@@ -1,5 +1,3 @@
-# Performance and Mobile App Optimization
-
 - [Performance and Mobile App Optimization](#performance-and-mobile-app-optimization)
   - [Render Optimization](#render-optimization)
   - [Debugging and Error Handling](#debugging-and-error-handling)
@@ -7,6 +5,10 @@
     - [Opening DevTools](#opening-devtools)
     - [LogBox](#logbox)
     - [Performance Monitor](#performance-monitor)
+  - [Asynchronous Data Handling and User Experience](#asynchronous-data-handling-and-user-experience)
+    - [1. Fetch vs. Axios (The API Battle)](#1-fetch-vs-axios-the-api-battle)
+    - [2. Managing the Data Lifecycle](#2-managing-the-data-lifecycle)
+    - [3. Splash Screens (Perceived Performance)](#3-splash-screens-perceived-performance)
 
 # Performance and Mobile App Optimization
 
@@ -138,3 +140,63 @@ LogBox is an in-app tool that displays when warnings or errors are logged by you
 On Android and iOS, an in-app performance overlay can be toggled during development by selecting "Perf Monitor" in the Dev Menu. Learn more about this feature <a href="https://reactnative.dev/docs/performance">here</a>.
 
 <img src="https://github.com/gleysi/ReactNativeNasa/blob/main/src/assets/performance_monitor.jpg?raw=true"/>
+
+## Asynchronous Data Handling and User Experience
+
+A critical difference between web and mobile development is the reliance on data fetching and the need for a **polished experience during load times**.
+
+
+### 1. Fetch vs. Axios (The API Battle)
+
+In React Native, you have two primary options for making API calls. While they achieve the same result, an interviewer might ask about the pros and cons of each.
+
+| Feature | Built-in `fetch` | Third-party `Axios` |
+| :--- | :--- | :--- |
+| **Source** | Built into the browser/runtime (available globally). | **External library** (requires `npm install axios`). |
+| **Interface** | Uses **Promises directly**, requiring `.then().then()`. | Uses Promises, but with a simpler, **cleaner syntax**. |
+| **Auto JSON** | Does **not auto-parse JSON**. Requires a manual `.then(res => res.json())`. | **Automatically parses JSON** response data. |
+| **Error Handling** | **Only rejects the Promise on network failure** (e.g., connection lost). HTTP errors (4xx, 5xx) are **not** rejections. | **Rejects the Promise automatically** on both network failure **AND HTTP error status** (4xx, 5xx). (This is a huge advantage.) |
+| **Interceptors** | Does **not** natively support them. | **Supports interceptors** for request/response handling (e.g., attaching auth tokens, logging). (Major advantage for complex apps.) |
+
+**Interview Verdict**: For small apps, `fetch` is fine. For **intermediate and enterprise-level apps, `Axios` is strongly preferred** due to better error handling and the power of interceptors.
+
+### 2. Managing the Data Lifecycle
+
+When fetching data, components must manage **three states** to ensure a good User Experience (UX) and prevent crashes:
+
+| State | Description |
+| :--- | :--- |
+| **Loading** ⏳ | The request has been sent, and we are waiting for a response.| 
+| **Success** ✅ | The request returned data successfully.| 
+| **Error** ❌ | The request failed (network error, 4xx, 5xx). | 
+
+This is often implemented using a **custom hook** (`useFetch`, for instance) or a **state machine pattern** like `useReducer`.
+
+```tsx
+// Data Fetching State Example
+const [data, setData] = useState(null);
+const [isLoading, setIsLoading] = useState(false);
+const [error, setError] = useState(null);
+
+useEffect(() => {
+    setIsLoading(true);
+    // Use try...catch for robust async error handling
+    try {
+        const response = await axios.get('/api/data');
+        setData(response.data);
+    } catch (e) {
+        setError(e.message);
+    } finally {
+        setIsLoading(false);
+    }
+}, []);
+
+```
+
+### 3. Splash Screens (Perceived Performance)
+
+The **Splash Screen** is the first screen a user sees when launching a mobile app. In React Native, this is **not a JavaScript component**; it is a **Native UI View** configured in **Xcode (iOS)** and **Android Studio (Android)**.
+
+* **Purpose:** To display a branded image (logo) while the native platform is loading the **JavaScript bundle** and initializing the React Native runtime.
+* **Perceived Performance:** It makes the application **feel faster** by replacing the blank white/black screen with a professional image. 
+* **Hiding the Splash:** Once the JavaScript bundle loads and your root React component is ready to render, you must **imperatively hide** the native Splash Screen using a library (e.g., `react-native-splash-screen`) to transition seamlessly to your app's main view.
